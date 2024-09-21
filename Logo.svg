@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="267.68268mm"
+   height="102.41508mm"
+   viewBox="0 0 267.68268 102.41508"
+   version="1.1"
+   id="svg1"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#505050"
+     inkscape:document-units="mm"
+     showguides="false" />
+  <defs
+     id="defs1" />
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-12.225331,-83.302404)">
+    <path
+       sodipodi:type="star"
+       style="fill:none;fill-opacity:0.629496;stroke:#ffffff;stroke-width:12.665;stroke-dasharray:none;stroke-opacity:1"
+       id="path1"
+       inkscape:flatsided="true"
+       sodipodi:sides="10"
+       sodipodi:cx="65.971474"
+       sodipodi:cy="134.50993"
+       sodipodi:r1="47.088581"
+       sodipodi:r2="44.783901"
+       sodipodi:arg1="0.62278433"
+       sodipodi:arg2="0.9369436"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 104.21953,161.97666 -23.449266,17.23596 -29.101897,0.16106 -23.638598,-16.97537 -9.146155,-27.62778 8.839806,-27.72732 23.449263,-17.235964 29.101898,-0.161057 23.638599,16.975371 9.14615,27.62778 z"
+       inkscape:transform-center-y="-1.6946134e-06" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:50.8px;font-family:Calibri;-inkscape-font-specification:'Calibri Bold';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:12.665;stroke-dasharray:none;stroke-opacity:1"
+       x="125.97012"
+       y="155.73828"
+       id="text2"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         style="fill:#ffffff;fill-opacity:1;stroke-width:12.665"
+         x="125.97012"
+         y="155.73828">WebOS</tspan></text>
+  </g>
+</svg>
