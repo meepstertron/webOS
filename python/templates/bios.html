@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebOS</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+        body {
+            margin: 0px;
+            padding: 0px;
+            background-color: black;
+            font-family: "Ubuntu", sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            color: #fff;
+        }
+        img {
+            width: 40%;
+            height: 40%;
+            align-items: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
+        }
+        p {
+            margin: 0px;
+            text-align: center;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+        }
+        .modal input, .modal select, .modal button {
+            margin-top: 10px;
+            padding: 8px;
+            width: 100%;
+            font-size: 16px;
+        }
+    </style>
+    <script>
+        let biosMenuOpen = false;
+        let redirectTimeout;
+
+        // Open the BIOS modal
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'b' || event.key === 'B') {
+                biosMenuOpen = true;
+                document.getElementById('biosModal').style.display = 'block';
+                clearTimeout(redirectTimeout); // Clear the existing timeout if the menu is opened
+            }
+        });
+
+        // Function to list boot devices
+        function listWOIs() {
+            fetch('http://127.0.0.1:8080/listWOIs')
+                .then(response => response.json())
+                .then(data => {
+                    let select = document.getElementById('bootDevice');
+                    select.innerHTML = ''; // Clear existing options
+                    data.forEach(woi => {
+                        let option = document.createElement('option');
+                        option.value = woi.path;
+                        option.textContent = woi.path;
+                        select.appendChild(option);
+                    });
+                });
+        }
+
+        // Function to install a WOI
+        function installWOI() {
+            let selectedPath = document.getElementById('bootDevice').value;
+            fetch('http://127.0.0.1:8080/installWOIs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: 'path=' + encodeURIComponent(selectedPath),
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('WOI installed successfully: ' + selectedPath);
+            });
+        }
+
+        // Reboot system (mock function)
+        function rebootSystem() {
+            os.system("reboot") 
+            // You can add actual reboot logic here
+        }
+
+        // Set date/time
+        function setDateTime() {
+            let date = document.getElementById('date').value;
+            let time = document.getElementById('time').value;
+            alert(`Date and time set to: ${date} ${time}`);
+            // Add actual logic to set date/time if needed
+        }
+
+        // Redirect to /start after 5 seconds if BIOS menu is not open
+        function startRedirect() {
+            redirectTimeout = setTimeout(() => {
+                if (!biosMenuOpen) {
+                    window.location.href = '/start';
+                }
+            }, 5000);
+        }
+
+        window.onload = startRedirect; // Start the redirect timer on page load
+    </script>
+</head>
+<body>
+    <img src="https://raw.githubusercontent.com/meepstertron/webOS/refs/heads/main/Logo.svg" alt="Logo">
+    <p>Hit [B] to enter the BIOS</p>
+
+    <!-- BIOS Modal -->
+    <div class="modal" id="biosModal">
+        <h2>BIOS Menu</h2>
+
+        <!-- Boot Device Selection -->
+        <label for="bootDevice">Select Boot Device:</label>
+        <select id="bootDevice" onchange="installWOI()">
+            <option>Loading devices...</option>
+        </select>
+        <button onclick="listWOIs()">Refresh Devices</button>
+
+        <!-- Date and Time Setting -->
+        <label for="date">Set Date:</label>
+        <input type="date" id="date">
+        <label for="time">Set Time:</label>
+        <input type="time" id="time">
+        <button onclick="setDateTime()">Set Date & Time</button>
+
+        <!-- Reboot Button -->
+        <button onclick="rebootSystem()">Reboot</button>
+    </div>
+
+</body>
+</html>
