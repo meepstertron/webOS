@@ -1,0 +1,9 @@
+{
+    "name": "pipetest",
+    "version": "1.0.0",
+    "description": "A test os",
+    "author": "Your Name",
+    "website": "example.com",
+    "online": "-",
+    "offline": "/html/index.html"
+}

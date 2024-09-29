@@ -1,0 +1,9 @@
+{
+    "name": "systemoptions",
+    "version": "1.0.0",
+    "description": "options for your system",
+    "author": "Meepstertron",
+    "website": "example.com",
+    "online": "-",
+    "offline": "/html/index.html"
+}

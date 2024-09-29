@@ -61,24 +61,39 @@
 
         // Function to list boot devices
         function listWOIs() {
-            fetch('http://127.0.0.1:8080/listWOIs')
-                .then(response => response.json())
-                .then(data => {
-                    let select = document.getElementById('bootDevice');
+        fetch('http://127.0.0.1:8080/listWOIs')
+            .then(response => response.json())
+            .then(data => {
+                console.log('Data fetched:', data);  // Log the fetched data
+
+                let select = document.getElementById('bootDevice');
+                let option = document.createElement('option');
+                option.text = 'Select a boot device';
+                select.appendChild(option)
+                if (select) {
                     select.innerHTML = ''; // Clear existing options
                     data.forEach(woi => {
+                        console.log('Adding option:', woi);  // Log each woi
+
+                        // Create and append the option
                         let option = document.createElement('option');
-                        option.value = woi.path;
-                        option.textContent = woi.path;
+                        option.value = woi.trim();  // Trim to ensure no extra spaces
+                        option.textContent = woi.trim(); // Set the display text
                         select.appendChild(option);
                     });
-                });
-        }
+                } else {
+                    console.error("Element with ID 'bootDevice' not found.");
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    }
 
         // Function to install a WOI
         function installWOI() {
             let selectedPath = document.getElementById('bootDevice').value;
-            fetch('http://127.0.0.1:8080/installWOIs', {
+            fetch('http://127.0.0.1:8080/installWOI', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
@@ -93,7 +108,7 @@
 
         // Reboot system (mock function)
         function rebootSystem() {
-            os.system("reboot") 
+            
             // You can add actual reboot logic here
         }
 
