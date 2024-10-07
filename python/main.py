@@ -1,10 +1,40 @@
-from flask import Flask, redirect, render_template, request, jsonify
+from flask import Flask, redirect, render_template, request, jsonify, url_for, Response
 import os
 import platform
 import psutil
 import subprocess
+import json
+from flask_cors import CORS
+import requests
+from urllib.parse import urlparse
+import paramiko
+
+
+
+
+
+
+
 
 app = Flask("ballsOS")
+CORS(app)
+
+
+def run_ssh_command(host, username, password, command):
+    """Connects to a remote host via SSH and runs a command."""
+    ssh = paramiko.SSHClient()
+    ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    
+    try:
+        ssh.connect(hostname=host, username=username, password=password)
+        stdin, stdout, stderr = ssh.exec_command(command)
+        result = stdout.read().decode()
+        error = stderr.read().decode()
+        return result if result else error
+    except Exception as e:
+        return str(e)
+    finally:
+        ssh.close()
 
 
 def find_woi_files_everywhere():
@@ -44,11 +74,42 @@ def info():
         "name": platform.node(),
         "platform": platform.system(),
         "platform_version": platform.version(),
-        "machine": platform.machine()
+        "machine": platform.machine(),
+        "version": "1.1"
     }
     
     return jsonify(info)
 
+
+@app.route("/start")
+def boot():
+    # Define the path to the JSON file
+    json_path = "/webOS/start.json"
+    
+    # Check if the file exists
+    if os.path.exists(json_path):
+        with open(json_path) as json_file:
+            data = json.load(json_file)
+
+            # Check if 'source' is in the data and is a valid path
+            source = data.get("source")
+            if source and os.path.isfile(source):
+                # Redirect the user to the specified HTML file
+                return redirect(url_for('serve_file', filename=source))
+            else:
+                # Render error template if 'source' is invalid
+                error_message = "Invalid source path."
+                return render_template('error.html', error=error_message)
+    else:
+        # Render error template if the JSON file doesn't exist
+        error_message = "The start.json file does not exist."
+        return render_template('error.html', error=error_message)
+
+@app.route('/files/<path:filename>')
+def serve_file(filename):
+    # Assuming the HTML files are in a folder named 'html'
+    return app.send_static_file(filename)
+    
 
 @app.route("/listWOIs")
 def listWOIs():
@@ -73,6 +134,23 @@ def  shutdown():
 def restart():
     os.system("reboot now -h")
     return(200)
+
+@app.route('/run-command', methods=['POST'])
+def run_command():
+    data = request.json
+    host = data.get('host')
+    username = data.get('username')
+    password = data.get('password')
+    command = data.get('command')
+
+    if not all([host, username, password, command]):
+        return jsonify({"error": "Missing parameters"}), 400
+
+    result = run_ssh_command(host, username, password, command)
+    print(result)
+    return jsonify({"output": result})
+
+
 
 
 
