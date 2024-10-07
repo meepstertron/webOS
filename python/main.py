@@ -120,7 +120,9 @@ def listWOIs():
 @app.route("/installWOI", methods=["POST"])
 def installWOI():
     path = request.form.get("path")
-    os.mkdir("/webOS")
+    try: os.mkdir("/webOS")
+    except: print("oops")
+    
     print(path)
     return
 # TODO: implement WOI installation

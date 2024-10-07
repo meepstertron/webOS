@@ -100,12 +100,12 @@ class webOSHelpers {
         };
     }
 
-    async runSSHCommand() {
+    async runSSHCommand(args) {
         const data = {
-          host: "192.168.1.100",
-          username: "user",
-          password: "pass",
-          command: "ls -la"
+          host: args.ADDRESS,
+          username: args.USERNAME,
+          password: args.PASSWORD,
+          command: args.COMMAND
         };
       
         try {
@@ -135,16 +135,16 @@ class webOSHelpers {
       
 
     async shutdown() {
-        const response = await fetch("http://127.0.0.1:8080/shutdown"); // Replace with your API URL
+        const response = await fetch("http://127.0.0.1:8080/shutdown"); 
     }
 
     async restart() {
-        const response = await fetch("http://127.0.0.1:8080/restart"); // Replace with your API URL
+        const response = await fetch("http://127.0.0.1:8080/restart");
     }
 
     async getStat(args) {
         try {
-            const response = await fetch("http://127.0.0.1:8080/systeminfo"); // Replace with your API URL
+            const response = await fetch("http://127.0.0.1:8080/systeminfo");
     
             // Check if the request was successful
             if (!response.ok) {
@@ -159,7 +159,7 @@ class webOSHelpers {
             const statValue = data[args.STAT];
             console.log("Fetched WebOS stat:", statValue);
     
-            return statValue; // Return the stat value
+            return statValue;
         } catch (error) {
             console.error("Error fetching WebOS stat:", error);
             return "Error"; // Return a fallback error message
@@ -169,7 +169,7 @@ class webOSHelpers {
 
     async getIfOnWebOS() {
         try {
-            const response = await fetch("http://127.0.0.1:8080/systeminfo"); // Replace with your API URL
+            const response = await fetch("http://127.0.0.1:8080/systeminfo");
 
             // Check if the request was successful
             if (!response.ok) {
